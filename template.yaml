@@ -13,6 +13,6 @@ spec:
         spec:
           containers:
           - name: backup
-            image: waiverdb-backup
+            image: "docker-registry.default.svc:5000/waiverdb-backup/waiverdb-backup:latest"
             command: ['pg_dump', '-d', 'waiverdb', '-h', 'waiverdb-test-123-database', '-p', '5432', '-U', 'waiverdb', '>', 'waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N")']
           restartPolicy: OnFailure 
