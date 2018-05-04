@@ -72,6 +72,8 @@ objects:
           metadata:
             labels:          
               parent: "cronjobbackup"
+          spec:
+            contaiers:
             - name: backup
               command: ['pg_dump', '-d', 'waiverdb', '-h', 'waiverdb-test-123-database', '-p', '5432', '-U', 'waiverdb', '>', 'waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N")']
             restartPolicy: OnFailure 
