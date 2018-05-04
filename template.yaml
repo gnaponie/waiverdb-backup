@@ -4,11 +4,10 @@ metadata:
   creationTimestamp: null
   name: backup-test
 objects:
-- apiVersion: v1
-  kind: Pod
-  metadata:
-    name: backup-agent
----
+        #- apiVersion: v1
+        #  kind: Pod
+        #  metadata:
+        #    name: backup-agent
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -61,19 +60,18 @@ objects:
           name: waiverdb-backup:latest
           namespace: waiverdb-backup 
       type: ImageChange
----
-apiVersion: v1 
-kind: CronJob
-metadata:
-  name: backup
-spec:
-  schedule: "*/5 * * * *"  
-  jobTemplate:             
-    spec:
-      template:
-        metadata:
-          labels:          
-            parent: "cronjobbackup"
-          - name: backup
-            command: ['pg_dump', '-d', 'waiverdb', '-h', 'waiverdb-test-123-database', '-p', '5432', '-U', 'waiverdb', '>', 'waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N")']
-          restartPolicy: OnFailure 
+- apiVersion: v1 
+  kind: CronJob
+  metadata:
+    name: backup
+  spec:
+    schedule: "*/5 * * * *"  
+    jobTemplate:             
+      spec:
+        template:
+          metadata:
+            labels:          
+              parent: "cronjobbackup"
+            - name: backup
+              command: ['pg_dump', '-d', 'waiverdb', '-h', 'waiverdb-test-123-database', '-p', '5432', '-U', 'waiverdb', '>', 'waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N")']
+            restartPolicy: OnFailure 
