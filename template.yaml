@@ -5,8 +5,8 @@ metadata:
 spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
-  schedule: "*/2 * * * *"  
-  jobTemplate:             
+  schedule: "*/1 * * * *"  
+  jobTemplate:
     spec:
       template:
         metadata:
@@ -16,7 +16,7 @@ spec:
           containers:
           - name: backup
             image: "docker-registry.default.svc:5000/waiverdb-backup/waiverdb-backup:latest"
-            command: ['/bin/bash', '-c', 'mkdir -p /var/tmp/waiverdb-backups && pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && sleep 120']
+            command: ['/bin/bash', '-c', 'pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && USER=waiverdb scp /var/tmp/waiverdb-backups/* bareos-01.eng.rdu2.redhat.com:/backups/bareos/backup_upshift && sleep 60']
             env:
             - name: PGPASSWORD
               valueFrom:
