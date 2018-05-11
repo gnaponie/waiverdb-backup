@@ -7,5 +7,7 @@ RUN dnf install -y iputils
 
 RUN mkdir -p /var/tmp/waiverdb-backups
 RUN chmod -R g=u /var/tmp/waiverdb-backups /etc/passwd
-ENTRYPOINT [ "uid_entrypoint" ]
+
+COPY uid_entrypoint.sh /
+ENTRYPOINT /uid_entrypoint.sh
 USER 1001
