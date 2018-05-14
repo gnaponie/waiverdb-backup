@@ -5,7 +5,7 @@ metadata:
 spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
-  schedule: "*/1 * * * *"  
+  schedule: "*/1 * * * *" 
   jobTemplate:
     spec:
       template:
@@ -15,8 +15,8 @@ spec:
         spec:
           containers:
           - name: backup
-            image: "172.30.114.236:5000/waiverdb-backup/waiverdb-backup:latest"
-            command: ['/bin/bash', '-c', 'pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && cat /etc/passwd && sleep 60']
+            image: "docker-registry.default.svc:5000/waiverdb-backup/waiverdb-backup:latest"
+            command: ['/bin/bash', '-c', 'echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd && pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && scp /var/tmp/waiverdb-backups/* bareos-01.eng.rdu2.redhat.com:/backups/bareos/backup_upshift && sleep 60']
             env:
             - name: PGPASSWORD
               valueFrom:
