@@ -13,8 +13,3 @@ RUN chgrp -R 0 /var/tmp/waiverdb-backups /etc/passwd /var/tmp/wheretomount && \
 
 # TODO: this should be nice to put in an env variable... later
 RUN echo "bareos-01.eng.rdu2.redhat.com:/backups/bareos/backup_upshift /var/tmp/wheretomount nfs rw,noauto,user 0 0" >> /etc/fstab
-
-RUN systemctl enable rpcbind.service
-RUN systemctl start rpcbind.service
-RUN systemctl restart rpcbind.service
-
