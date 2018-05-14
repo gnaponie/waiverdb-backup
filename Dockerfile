@@ -9,7 +9,7 @@ RUN mkdir -p /var/tmp/waiverdb-backups
 RUN chmod -R g=u /var/tmp/waiverdb-backups /etc/passwd
 
 COPY uid_entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /uid_entrypoint.sh
 
 USER 1001
 
