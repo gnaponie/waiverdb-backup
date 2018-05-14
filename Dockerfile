@@ -6,7 +6,8 @@ RUN dnf install -y openssh-clients
 RUN dnf install -y iputils
 
 RUN mkdir -p /var/tmp/waiverdb-backups
-RUN chmod -R g=u /var/tmp/waiverdb-backups /etc/passwd
+RUN chgrp -R 0 /var/tmp/waiverdb-backups && \
+    chmod -R g=u /var/tmp/waiverdb-backups /etc/passwd
 
 COPY uid_entrypoint.sh /
 RUN chmod +x /uid_entrypoint.sh
