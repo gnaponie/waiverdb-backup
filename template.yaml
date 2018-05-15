@@ -16,11 +16,16 @@ spec:
           containers:
           - name: backup
             image: "docker-registry.default.svc:5000/test-waiverdb-backup/waiverdb-backup:latest"
-            command: ['/bin/bash', '-c', 'echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd && pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && sleep 60']
+            command: ['/bin/bash', '-c', 'echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/sbin/nologin" >> /etc/passwd && pg_dump -d waiverdb -h waiverdb-test-123-database -p 5432 -U waiverdb -f /var/tmp/waiverdb-backups/$(date +"%Y-%m-%d-%H:%M:%S,%3N") && ls -la /var/tmp/waiverdb-backups && echo $TEMPORARY_BACKUP_KEY >> /var/tmp/temporary_backup_key.pem && chmod 400 /var/tmp/temporary_backup_key.pem && sleep 60']
             env:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: waiverdb-test-123-secret
                   key: database-password
+            - name: TEMPORARY_BACKUP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: temporary-upshift-backups
+                  key: temporary-upshift-backups-key.pem
           restartPolicy: OnFailure 
